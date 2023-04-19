@@ -21,6 +21,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Main from './components/Main';
 import LoginScreen from './components/LoginScreen';
+import DetailShift from './components/DetailShift';
 
 function App(): JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -29,9 +30,10 @@ function App(): JSX.Element {
     <>
       <NavigationContainer>
         <View style={styles.container}>
-          <Stack.Navigator initialRouteName="Main">
+          <Stack.Navigator initialRouteName="Detail">
             <Stack.Screen name="Welcome" component={Main} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Detail" component={DetailShift} />
           </Stack.Navigator>
         </View>
       </NavigationContainer>

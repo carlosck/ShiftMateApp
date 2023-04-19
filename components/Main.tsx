@@ -9,7 +9,7 @@ const ELEMENTS = [
   },
   {
     id: 2,
-    title: 'Baniar a Tati',
+    title: 'Bañar a Tati',
   },
   {
     id: 3,
@@ -17,7 +17,7 @@ const ELEMENTS = [
   },
   {
     id: 4,
-    title: 'Banarse primero',
+    title: 'Bañarse primero',
   },
   {
     id: 5,
