@@ -1,6 +1,9 @@
 import React from 'react';
 
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
+
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../types';
 
 const ELEMENTS = [
   {
@@ -25,15 +28,36 @@ const ELEMENTS = [
   },
 ];
 
-type ItemProps = {title: string};
+type MainScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Main'
+>;
 
-const Item = ({title}: ItemProps) => (
+type MainProps = {
+  navigation: MainScreenNavigationProp;
+};
+
+type ItemProps = {
+  id: number;
+  title: string;
+  navigation: MainScreenNavigationProp;
+};
+
+const Item = ({id, title, navigation}: ItemProps) => (
   <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
+    <Pressable>
+      <Text
+        onPress={() => {
+          navigation.navigate('Detail', {itemId: id});
+        }}
+        style={styles.title}>
+        {title}
+      </Text>
+    </Pressable>
   </View>
 );
 
-function Main(): JSX.Element {
+function Main({navigation}: MainProps): JSX.Element {
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>
@@ -42,7 +66,9 @@ function Main(): JSX.Element {
         removeClippedSubviews={false}
         data={ELEMENTS}
         renderItem={({item}) => {
-          return <Item title={item.title} />;
+          return (
+            <Item id={item.id} title={item.title} navigation={navigation} />
+          );
         }}
       />
     </View>

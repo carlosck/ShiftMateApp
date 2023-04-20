@@ -50,7 +50,7 @@ const Item = ({title}: ItemProps) => (
     <Text style={styles.itemTitle}>{title}</Text>
   </View>
 );
-function DetailShift(): JSX.Element {
+function DetailShiftScreen(): JSX.Element {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lavar Trastes</Text>
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default DetailShift;
+export default DetailShiftScreen;

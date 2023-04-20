@@ -24,6 +24,7 @@ function NewShiftScreen(): JSX.Element {
 
   const addUser = () => {
     setUserList([...userList, userName]);
+    setUserName('');
   };
 
   console.log('init');

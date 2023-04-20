@@ -21,19 +21,22 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Main from './components/Main';
 import LoginScreen from './components/LoginScreen';
-import DetailShift from './components/DetailShift';
+import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
-function App(): JSX.Element {
-  const Stack = createNativeStackNavigator();
 
+import {RootStackParamList} from './types';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+function App(): JSX.Element {
   return (
     <>
       <NavigationContainer>
         <View style={styles.container}>
-          <Stack.Navigator initialRouteName="NewShift">
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Main" component={Main} />
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Detail" component={DetailShift} />
+            <Stack.Screen name="Detail" component={DetailShiftScreen} />
             <Stack.Screen name="NewShift" component={NewShiftScreen} />
           </Stack.Navigator>
         </View>

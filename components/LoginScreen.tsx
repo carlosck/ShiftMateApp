@@ -1,8 +1,21 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../types';
 
-function LoginScreen(): JSX.Element {
-  const setLogin: any = () => {};
+type MainScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Main'
+>;
+
+type MainProps = {
+  navigation: MainScreenNavigationProp;
+};
+
+function LoginScreen({navigation}: MainProps): JSX.Element {
+  const setLogin: any = () => {
+    navigation.navigate('Main', {userId: 1});
+  };
   return (
     <View style={styles.Container}>
       <Text style={styles.Title}>ShiftMate</Text>
