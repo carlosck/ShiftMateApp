@@ -56,8 +56,8 @@ function DetailShift(): JSX.Element {
       <Text style={styles.title}>Lavar Trastes</Text>
       <View>
         <Text style={styles.lastChangeTitle}>
-          Last Change:{' '}
-          <Text style={styles.lastChangeDate}>{LAST_CHANGE_DATE} </Text>{' '}
+          Last Change:
+          <Text style={styles.lastChangeDate}>{LAST_CHANGE_DATE} </Text>
         </Text>
         <Text style={styles.current}>Current Assigned</Text>
         <Text style={styles.currentShift}>{curren_shift_user.title}</Text>
