@@ -23,6 +23,7 @@ import Main from './components/Main';
 import LoginScreen from './components/LoginScreen';
 import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
+import SignUp from './components/SignupScreen';
 
 import {RootStackParamList} from './types';
 
@@ -33,10 +34,11 @@ function App(): JSX.Element {
     <>
       <NavigationContainer>
         <View style={styles.container}>
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="SignUp">
             <Stack.Screen name="Main" component={Main} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Detail" component={DetailShiftScreen} />
+            <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="NewShift" component={NewShiftScreen} />
           </Stack.Navigator>
         </View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 // import auth from '@react-native-firebase/auth';
@@ -13,28 +13,54 @@ type MainProps = {
   navigation: MainScreenNavigationProp;
 };
 
-function LoginScreen({navigation}: MainProps): JSX.Element {
-  const setLogin: any = () => {
+function SignUp({navigation}: MainProps): JSX.Element {
+  const setSignUp: any = () => {
     navigation.navigate('Main', {userId: 1});
   };
-  const setSignUP: any = () => {
-    navigation.navigate('SignUp', {});
-  };
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repassword, setRepassword] = useState('');
+
   return (
     <View style={styles.Container}>
-      <Text style={styles.Title}>ShiftMate</Text>
       <View>
-        <Text>User</Text>
-        <TextInput placeholder="User" style={styles.InputField} />
+        <Text>Email</Text>
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.InputField}
+        />
+        <Text>Name</Text>
+        <TextInput
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+          style={styles.InputField}
+        />
         <Text>Password</Text>
-        <TextInput placeholder="Password" style={styles.InputField} />
-        <Pressable onPress={setLogin}>
-          <Text style={styles.Button}>Login</Text>
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          style={styles.InputField}
+        />
+        <Text>Re Password</Text>
+        <TextInput
+          placeholder="retype Password"
+          value={repassword}
+          onChangeText={setRepassword}
+          style={styles.InputField}
+        />
+        <Pressable onPress={setSignUp}>
+          <Text style={styles.Button}>Sign Up</Text>
         </Pressable>
       </View>
       <View>
-        <Pressable onPress={setSignUP}>
-          <Text style={styles.Register}>Create new account</Text>
+        <Pressable>
+          <Text style={styles.Register}>Login</Text>
         </Pressable>
       </View>
     </View>
@@ -76,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignUp;
