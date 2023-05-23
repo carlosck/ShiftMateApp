@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import {RootStackParamList} from '../types';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
@@ -14,14 +14,37 @@ type MainProps = {
 };
 
 function SignUp({navigation}: MainProps): JSX.Element {
-  const setSignUp: any = () => {
-    navigation.navigate('Main', {userId: 1});
-  };
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
+
+  const setSignUp: any = () => {
+    console.log('email', email);
+    console.log('pass', password);
+
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(user => {
+        console.log('User account created & signed in!', user);
+        navigation.navigate('Main', {userId: 1});
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        if (error.code === 'auth/weak-password') {
+          console.log('That password is weak');
+        }
+
+        console.error(error);
+      });
+  };
 
   return (
     <View style={styles.Container}>

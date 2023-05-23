@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import {RootStackParamList} from '../types';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
@@ -14,9 +14,34 @@ type MainProps = {
 };
 
 function LoginScreen({navigation}: MainProps): JSX.Element {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const setLogin: any = () => {
-    navigation.navigate('Main', {userId: 1});
+    //navigation.navigate('Main', {userId: 1});
+    auth()
+      .signInWithEmailAndPassword(email.trim(), password)
+      .then(user => {
+        console.log('User ', user);
+        navigation.navigate('Main', {userId: 1});
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        if (error.code === 'auth/weak-password') {
+          console.log('That password is weak');
+        }
+
+        console.error(error);
+      });
   };
+
   const setSignUP: any = () => {
     navigation.navigate('SignUp', {});
   };
@@ -25,9 +50,17 @@ function LoginScreen({navigation}: MainProps): JSX.Element {
       <Text style={styles.Title}>ShiftMate</Text>
       <View>
         <Text>User</Text>
-        <TextInput placeholder="User" style={styles.InputField} />
+        <TextInput
+          placeholder="Email"
+          style={styles.InputField}
+          onChangeText={setEmail}
+        />
         <Text>Password</Text>
-        <TextInput placeholder="Password" style={styles.InputField} />
+        <TextInput
+          placeholder="Password"
+          style={styles.InputField}
+          onChangeText={setPassword}
+        />
         <Pressable onPress={setLogin}>
           <Text style={styles.Button}>Login</Text>
         </Pressable>

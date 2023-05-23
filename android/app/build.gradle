@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.shiftmateapp"
+    namespace "mx.rdy.shiftmate"
     defaultConfig {
-        applicationId "com.shiftmateapp"
+        applicationId "mx.rdy.shiftmate"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -153,6 +153,8 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
@@ -168,3 +170,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: 'com.google.gms.google-services'

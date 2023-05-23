@@ -34,7 +34,7 @@ function App(): JSX.Element {
     <>
       <NavigationContainer>
         <View style={styles.container}>
-          <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Screen name="Main" component={Main} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Detail" component={DetailShiftScreen} />
