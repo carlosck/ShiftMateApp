@@ -6,3 +6,8 @@ export type RootStackParamList = {
   SignUp: {};
   // ...
 };
+
+export type UserDataXHR = {
+  user: {},
+  setUser: any
+}

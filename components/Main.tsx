@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 
-import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types';
-import {UserContext} from '../App';
+import {useUserContext} from "../helpers/context"
 
 const ELEMENTS = [
   {
@@ -58,16 +58,49 @@ const Item = ({id, title, navigation}: ItemProps) => (
   </View>
 );
 
+
+
+
 function Main({navigation}: MainProps): JSX.Element {
-  const UserData = useContext(UserContext);
-  if (UserData !== null) {
-    console.log('Usser email->', UserData.user.user.email);
+  const {user,setUser} = useUserContext();
+  const [loaded, setLoaded]= useState(false);
+  
+  useEffect(()=>{
+    getProjects();
+  },[])
+
+
+  const getProjects = async () =>{
+    try {
+      const response  = await fetch('https://shift-mate-crud.vercel.app/api/get_projects',{
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mail:'test@algo.com'
+        })
+  
+      });
+  
+      const responseJson= response.json();
+      console.warn('response_>', responseJson);
+    } catch (error) {
+      console.log(error)
+    }
+    setLoaded(true);
+  }
+
+  if (user !== null) {
+    console.log('User email->', user.email);
   }
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>
       <Text>Home</Text>
+      {loaded ? 
       <FlatList
         removeClippedSubviews={false}
         data={ELEMENTS}
@@ -76,7 +109,10 @@ function Main({navigation}: MainProps): JSX.Element {
             <Item id={item.id} title={item.title} navigation={navigation} />
           );
         }}
-      />
+      /> : 
+      <ActivityIndicator size="large" />
+
+    }
     </View>
   );
 }

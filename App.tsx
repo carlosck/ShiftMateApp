@@ -25,17 +25,18 @@ import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
 import SignUp from './components/SignupScreen';
 
-import {RootStackParamList} from './types';
+import {RootStackParamList, UserDataXHR} from './types';
+import {UserProvider} from './helpers/context';
 
-export const UserContext = createContext(null);
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
-  const [user, setUser] = useState('');
+
   return (
     <>
-      <UserContext.Provider value={{user, setUser}}>
+      <UserProvider>
         <NavigationContainer>
           <View style={styles.container}>
             <Stack.Navigator initialRouteName="Login">
@@ -47,7 +48,7 @@ function App(): JSX.Element {
             </Stack.Navigator>
           </View>
         </NavigationContainer>
-      </UserContext.Provider>
+      </UserProvider>
     </>
   );
 }
