@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import {RootStackParamList} from '../types';
+import {UserContext} from '../App';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -16,13 +17,17 @@ type MainProps = {
 function LoginScreen({navigation}: MainProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const UserData = useContext(UserContext);
+  console.log('UserData', UserData?.user);
 
   const setLogin: any = () => {
     //navigation.navigate('Main', {userId: 1});
     auth()
       .signInWithEmailAndPassword(email.trim(), password)
-      .then(user => {
-        console.log('User ', user);
+      .then(async _user => {
+        // const user = useContext(UserContext);
+        UserData.setUser(_user);
+        console.log('User ', _user);
         navigation.navigate('Main', {userId: 1});
       })
       .catch(error => {

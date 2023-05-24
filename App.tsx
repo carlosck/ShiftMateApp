@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {createContext, useState} from 'react';
 //import type {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
 /*
@@ -27,22 +27,27 @@ import SignUp from './components/SignupScreen';
 
 import {RootStackParamList} from './types';
 
+export const UserContext = createContext(null);
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
+  const [user, setUser] = useState('');
   return (
     <>
-      <NavigationContainer>
-        <View style={styles.container}>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Main" component={Main} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Detail" component={DetailShiftScreen} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="NewShift" component={NewShiftScreen} />
-          </Stack.Navigator>
-        </View>
-      </NavigationContainer>
+      <UserContext.Provider value={{user, setUser}}>
+        <NavigationContainer>
+          <View style={styles.container}>
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen name="Main" component={Main} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Detail" component={DetailShiftScreen} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="NewShift" component={NewShiftScreen} />
+            </Stack.Navigator>
+          </View>
+        </NavigationContainer>
+      </UserContext.Provider>
     </>
   );
 }

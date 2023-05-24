@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {View, Text, StyleSheet, FlatList, Pressable} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types';
+import {UserContext} from '../App';
 
 const ELEMENTS = [
   {
@@ -58,6 +59,11 @@ const Item = ({id, title, navigation}: ItemProps) => (
 );
 
 function Main({navigation}: MainProps): JSX.Element {
+  const UserData = useContext(UserContext);
+  if (UserData !== null) {
+    console.log('Usser email->', UserData.user.user.email);
+  }
+
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>

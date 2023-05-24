@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import {RootStackParamList} from '../types';
+import {UserContext} from '../App';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -18,6 +19,7 @@ function SignUp({navigation}: MainProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
+  const UserData = useContext(UserContext);
 
   const setSignUp: any = () => {
     console.log('email', email);
@@ -25,8 +27,11 @@ function SignUp({navigation}: MainProps): JSX.Element {
 
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        console.log('User account created & signed in!', user);
+      .then(_user => {
+        console.log('User account created & signed in!', _user);
+        if (UserData !== null) {
+          UserData.setUser(_user);
+        }
         navigation.navigate('Main', {userId: 1});
       })
       .catch(error => {
