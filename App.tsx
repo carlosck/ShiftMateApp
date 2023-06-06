@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {createContext, useState} from 'react';
+import React from 'react';
 //import type {PropsWithChildren} from 'react';
 import {StyleSheet, View} from 'react-native';
 /*
@@ -25,21 +25,18 @@ import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
 import SignUp from './components/SignupScreen';
 
-import {RootStackParamList, UserDataXHR} from './types';
+import {RootStackParamList} from './types';
 import {UserProvider} from './helpers/context';
-
-
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
-
   return (
     <>
       <UserProvider>
         <NavigationContainer>
           <View style={styles.container}>
-            <Stack.Navigator initialRouteName="Login">
+            <Stack.Navigator initialRouteName="Main">
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Detail" component={DetailShiftScreen} />

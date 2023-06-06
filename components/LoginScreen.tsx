@@ -1,9 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import auth from '@react-native-firebase/auth';
-import {RootStackParamList, UserDataXHR} from '../types';
-import {useUserContext} from "../helpers/context"
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {RootStackParamList} from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// import {useUserContext} from '../helpers/context';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,16 +15,24 @@ type MainScreenNavigationProp = NativeStackNavigationProp<
 type MainProps = {
   navigation: MainScreenNavigationProp;
 };
-type UserDataContext = {
+
+/* type UserDataContext = {
   user: any,
   setUser: any
 }
-
+ */
+async function saveUSerData(user: FirebaseAuthTypes.UserCredential) {
+  try {
+    await AsyncStorage.setItem('@shiftMateAppUserData', JSON.stringify(user));
+  } catch (e) {
+    console.log('Error: save UserData');
+  }
+}
 function LoginScreen({navigation}: MainProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useUserContext()
-  console.log('UserData', user);
+  // const [user, setUser] = useUserContext()
+  // console.log('UserData', user);
 
   const setLogin: any = () => {
     //navigation.navigate('Main', {userId: 1});
@@ -30,9 +40,10 @@ function LoginScreen({navigation}: MainProps): JSX.Element {
       .signInWithEmailAndPassword(email.trim(), password)
       .then(async _user => {
         // const user = useContext(UserContext);
-        setUser(_user);
-        console.log('User ', _user);
-        navigation.navigate('Main', {userId: 1});
+        // setUser(_user);
+        console.log('User____> ', _user);
+        saveUSerData(_user);
+        navigation.navigate('Main', {emailUser: 'algo'});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {

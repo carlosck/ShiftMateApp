@@ -8,23 +8,64 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
+import {RootStackParamList} from '../types';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
+type MainScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Main'
+>;
 type UserItemProps = {title: string};
-
+type MainProps = {
+  navigation: MainScreenNavigationProp;
+  route: any;
+};
 const UserItem = ({title}: UserItemProps) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
   </View>
 );
 
-function NewShiftScreen(): JSX.Element {
+function NewShiftScreen({route, navigation}: MainProps): JSX.Element {
   const [shiftName, setShiftName] = useState('');
   const [userName, setUserName] = useState<string>('');
   const [userList, setUserList] = useState<string[]>([]);
-
+  const {emailUser} = route.params;
+  console.log('emailUser', emailUser);
   const addUser = () => {
     setUserList([...userList, userName]);
     setUserName('');
+  };
+
+  const addProject = () => {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    var raw = JSON.stringify({
+      mail: emailUser,
+      name: shiftName,
+      actors: userList,
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+    console.log('requestOptions', requestOptions);
+    fetch(
+      'https://shift-mate-crud.vercel.app/api/create_project',
+      requestOptions,
+    )
+      .then(response => response.text())
+      .then(result => {
+        console.log(result);
+        navigation.navigate('Main', {
+          emailUser: emailUser,
+        });
+      })
+      .catch(error => console.log('error', error));
   };
 
   console.log('init');
@@ -63,7 +104,13 @@ function NewShiftScreen(): JSX.Element {
               </Text>
             </Pressable>
             <Pressable>
-              <Text style={styles.buttonDone}>Done </Text>
+              <Text
+                style={styles.buttonDone}
+                onPress={() => {
+                  addProject();
+                }}>
+                Done
+              </Text>
             </Pressable>
           </View>
           <View>

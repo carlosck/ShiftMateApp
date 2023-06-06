@@ -1,33 +1,14 @@
-import React, { useContext, useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {View, Text, StyleSheet, FlatList, Pressable, ActivityIndicator} from 'react-native';
+import {View, Text} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../types';
-import {useUserContext} from "../helpers/context"
-
-const ELEMENTS = [
-  {
-    id: 1,
-    title: 'Lavar Platos',
-  },
-  {
-    id: 2,
-    title: 'Bañar a Tati',
-  },
-  {
-    id: 3,
-    title: 'Sacar la basura',
-  },
-  {
-    id: 4,
-    title: 'Bañarse primero',
-  },
-  {
-    id: 5,
-    title: 'Barrer la cochera',
-  },
-];
+import ProjectsList from './ProjectsList';
+import UserData from '../types/userData';
+// import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+// import {useUserContext} from '../helpers/context';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -38,99 +19,46 @@ type MainProps = {
   navigation: MainScreenNavigationProp;
 };
 
-type ItemProps = {
-  id: number;
-  title: string;
-  navigation: MainScreenNavigationProp;
-};
-
-const Item = ({id, title, navigation}: ItemProps) => (
-  <View style={styles.item}>
-    <Pressable>
-      <Text
-        onPress={() => {
-          navigation.navigate('Detail', {itemId: id});
-        }}
-        style={styles.title}>
-        {title}
-      </Text>
-    </Pressable>
-  </View>
-);
-
-
-
-
 function Main({navigation}: MainProps): JSX.Element {
-  const {user,setUser} = useUserContext();
-  const [loaded, setLoaded]= useState(false);
-  
-  useEffect(()=>{
-    getProjects();
-  },[])
+  let [userDataFromSession, setUserDataFromSession] = useState<
+    UserData | undefined
+  >(undefined);
 
-
-  const getProjects = async () =>{
+  async function getUserData() {
+    //let jsonValue = null;
     try {
-      const response  = await fetch('https://shift-mate-crud.vercel.app/api/get_projects',{
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          mail:'test@algo.com'
-        })
-  
-      });
-  
-      const responseJson= response.json();
-      console.warn('response_>', responseJson);
-    } catch (error) {
-      console.log(error)
+      const result = await AsyncStorage.getItem('@shiftMateAppUserData');
+      console.log('1111111111111111111111111111111111');
+      console.log('result', result);
+      if (result !== null) {
+        setUserDataFromSession(result != null ? JSON.parse(result) : null);
+      } else {
+        navigation.navigate('Login', {itemId: 1});
+      }
+      //jsonValue = result != null ? JSON.parse(result) : null;
+      return result;
+    } catch (e) {
+      // error reading value
     }
-    setLoaded(true);
   }
 
-  if (user !== null) {
-    console.log('User email->', user.email);
-  }
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>
       <Text>Home</Text>
-      {loaded ? 
-      <FlatList
-        removeClippedSubviews={false}
-        data={ELEMENTS}
-        renderItem={({item}) => {
-          return (
-            <Item id={item.id} title={item.title} navigation={navigation} />
-          );
-        }}
-      /> : 
-      <ActivityIndicator size="large" />
-
-    }
+      {userDataFromSession && (
+        <ProjectsList
+          navigation={navigation}
+          emailUser={userDataFromSession.user.email}
+        />
+      )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
 
 export default Main;
 /*

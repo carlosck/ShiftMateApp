@@ -1,13 +1,13 @@
 export type RootStackParamList = {
-  Main: {userId: number};
+  Main: {emailUser: String};
   Login: {itemId: number};
-  NewShift: {itemId: number};
-  Detail: {itemId: number};
+  NewShift: {emailUser: String};
+  Detail: {itemName: String};
   SignUp: {};
   // ...
 };
 
 export type UserDataXHR = {
-  user: {},
-  setUser: any
-}
+  user: {};
+  setUser: any;
+};
