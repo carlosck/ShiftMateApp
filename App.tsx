@@ -27,17 +27,32 @@ import SignUp from './components/SignupScreen';
 
 import {RootStackParamList} from './types';
 import {UserProvider} from './helpers/context';
+import MenuTitle from './components/MenuTitle';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#333333',
+    },
+    footerContainer: {backgroundColor: '#333333'},
+  });
+
   return (
     <>
       <UserProvider>
         <NavigationContainer>
           <View style={styles.container}>
             <Stack.Navigator initialRouteName="Main">
-              <Stack.Screen name="Main" component={Main} />
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{
+                  headerTitle: () => <MenuTitle />,
+                }}
+              />
               <Stack.Screen name="Login" component={LoginScreen} />
               <Stack.Screen name="Detail" component={DetailShiftScreen} />
               <Stack.Screen name="SignUp" component={SignUp} />
@@ -50,13 +65,6 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#333333',
-  },
-  footerContainer: {backgroundColor: '#333333'},
-});
 /*
 
 const styles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,34 +8,36 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import {RootStackParamList} from '../types';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-type MainScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Main'
->;
+import GetUSerFromStorage from '../helpers/getUSerDataFromStorage';
 type UserItemProps = {title: string};
-type MainProps = {
-  navigation: MainScreenNavigationProp;
-  route: any;
-};
+
 const UserItem = ({title}: UserItemProps) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
   </View>
 );
 
-function NewShiftScreen({route, navigation}: MainProps): JSX.Element {
+function NewShiftScreen({navigation}: any): JSX.Element {
   const [shiftName, setShiftName] = useState('');
   const [userName, setUserName] = useState<string>('');
   const [userList, setUserList] = useState<string[]>([]);
-  const {emailUser} = route.params;
-  console.log('emailUser', emailUser);
+  //const {emailUser} = route.params;
+  const [emailUser, setEmailUser] = useState<String | undefined>(undefined);
+
   const addUser = () => {
     setUserList([...userList, userName]);
     setUserName('');
   };
+  async function getData() {
+    const data = await GetUSerFromStorage(navigation);
+    console.log('data........', data);
+    setEmailUser(data.user.email);
+  }
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const addProject = () => {
     var myHeaders = new Headers();
@@ -61,9 +63,7 @@ function NewShiftScreen({route, navigation}: MainProps): JSX.Element {
       .then(response => response.text())
       .then(result => {
         console.log(result);
-        navigation.navigate('Main', {
-          emailUser: emailUser,
-        });
+        navigation.navigate('Main');
       })
       .catch(error => console.log('error', error));
   };

@@ -85,8 +85,8 @@ export default function ProjectsList({
     }
     // setLoaded(true);
   };
-  function AddProjectClick(_emailUser: String) {
-    navigation.navigate('NewShift', {emailUser: _emailUser});
+  function AddProjectClick() {
+    navigation.navigate('NewShift', {});
   }
 
   useEffect(() => {
@@ -96,6 +96,7 @@ export default function ProjectsList({
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation]);
   return (
     // eslint-disable-next-line react-native/no-inline-styles
@@ -107,7 +108,7 @@ export default function ProjectsList({
           <Text>0 Projects</Text>
           <Button
             onPress={() => {
-              AddProjectClick(emailUser);
+              AddProjectClick();
             }}
             title="Add Project"
           />

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList, StyleSheet, Pressable} from 'react-native';
+import GetUSerFromStorage from '../helpers/getUSerDataFromStorage';
 
 interface Shift {
   id: number;
@@ -50,7 +51,30 @@ const Item = ({title}: ItemProps) => (
     <Text style={styles.itemTitle}>{title}</Text>
   </View>
 );
-function DetailShiftScreen(): JSX.Element {
+
+function DetailShiftScreen({navigation}: any): JSX.Element {
+  const [emailUser, setEmailUser] = useState<String | undefined>(undefined);
+
+  async function getData() {
+    const data = await GetUSerFromStorage(navigation);
+    console.log('data........', data);
+    setEmailUser(data.user.email);
+  }
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (emailUser) {
+      getDetailData();
+    }
+  }, [emailUser]);
+
+  async function getDetailData() {
+    console.log('getdetail data');
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lavar Trastes</Text>

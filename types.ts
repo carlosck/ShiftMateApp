@@ -1,7 +1,7 @@
 export type RootStackParamList = {
   Main: {emailUser: String};
   Login: {itemId: number};
-  NewShift: {emailUser: String};
+  NewShift: {};
   Detail: {itemName: String};
   SignUp: {};
   // ...

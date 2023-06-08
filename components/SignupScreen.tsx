@@ -1,9 +1,10 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import auth from '@react-native-firebase/auth';
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {RootStackParamList} from '../types';
-import {UserContext} from '../App';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {UserContext} from '../';
 
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -13,13 +14,20 @@ type MainScreenNavigationProp = NativeStackNavigationProp<
 type MainProps = {
   navigation: MainScreenNavigationProp;
 };
+async function saveUSerData(user: FirebaseAuthTypes.UserCredential) {
+  try {
+    await AsyncStorage.setItem('@shiftMateAppUserData', JSON.stringify(user));
+  } catch (e) {
+    console.log('Error: save UserData');
+  }
+}
 
 function SignUp({navigation}: MainProps): JSX.Element {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
-  const UserData = useContext(UserContext);
+  //const UserData = useContext(UserContext);
 
   const setSignUp: any = () => {
     console.log('email', email);
@@ -29,10 +37,12 @@ function SignUp({navigation}: MainProps): JSX.Element {
       .createUserWithEmailAndPassword(email, password)
       .then(_user => {
         console.log('User account created & signed in!', _user);
-        if (UserData !== null) {
+        /* if (UserData !== null) {
           UserData.setUser(_user);
-        }
-        navigation.navigate('Main', {userId: 1});
+        } */
+        saveUSerData(_user);
+        navigation.navigate('Main', {emailUser: 'algo'});
+        navigation.navigate('Main', {emailUser: ''});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
