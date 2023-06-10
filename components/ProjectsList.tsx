@@ -31,7 +31,8 @@ const Item = ({name, navigation}: ItemProps) => (
     <Pressable>
       <Text
         onPress={() => {
-          navigation.navigate('Detail', {itemName: name});
+          console.log('{projectName: name', name);
+          navigation.navigate('Detail', {projectName: name});
         }}
         style={styles.title}>
         {name}
@@ -73,7 +74,7 @@ export default function ProjectsList({
       )
         .then(response => response.text())
         .then(result => {
-          console.log('3333333333333333333333333333333');
+          console.log('---------getProjects---------');
           console.log('response.json', JSON.parse(result));
           const resultJson = JSON.parse(result);
           setProjects(resultJson.data);
