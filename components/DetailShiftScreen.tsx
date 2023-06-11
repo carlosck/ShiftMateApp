@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -23,46 +24,6 @@ interface Shift {
   shift: number;
 }
 
-let curren_shift_user: Shift = {
-  id: 0,
-  title: '',
-  shift: 0,
-};
-const orderShifts = (shifts: Array<string>, CURRENT_SHIFT_ID: number) => {
-  let shifts_indexed: Shift[] = [];
-
-  shifts.map((item, index) => {
-    shifts_indexed.push({
-      id: index + 1,
-      title: item,
-      shift: index,
-    });
-  });
-
-  let index = shifts_indexed.findIndex(
-    (element: Shift) => element.shift === CURRENT_SHIFT_ID,
-  );
-  console.log('---------------------------------orderShifts--------------');
-  console.log('index', index);
-  console.log('shifts_indexed', shifts_indexed);
-  curren_shift_user = shifts_indexed[index];
-  let prev = null;
-  let next = null;
-  if (index === 0) {
-    prev = shifts_indexed.splice(1, 1);
-    next = shifts_indexed.splice(1);
-  } else {
-    prev = shifts_indexed.splice(0, index);
-    next = shifts_indexed.splice(index);
-  }
-
-  console.log('prev', prev);
-  console.log('next', next);
-  return [...next, ...prev];
-};
-
-let ORDERED_SHIFTS: ArrayLike<any> | null | undefined = [];
-
 type ItemProps = {title: string};
 
 const Item = ({title}: ItemProps) => (
@@ -76,9 +37,63 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
   const [projectData, setProjectData] = useState<ProjectDataType | undefined>(
     undefined,
   );
+  const [currentShift, setCurrentShift] = useState(0);
+  const [currentActor, setCurrentActor] = useState('');
+  const [actors, setActors] = useState([]);
+  const [orderedShifts, setOrderedShifts] = useState<
+    ArrayLike<any> | null | undefined
+  >([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const options = {
+    headerRight: () => (
+      <Pressable>
+        <Text
+          onPress={() => {
+            navigation.navigate('AddActor', {});
+          }}>
+          Add Actor
+        </Text>
+      </Pressable>
+    ),
+  };
+
+  const orderShifts = () => {
+    let shifts_indexed: Shift[] = [];
+
+    actors.map((item, index) => {
+      shifts_indexed.push({
+        id: index + 1,
+        title: item,
+        shift: index,
+      });
+    });
+
+    let index = shifts_indexed.findIndex(
+      (element: Shift) => element.shift === currentShift,
+    );
+    console.log('---------------------------------orderShifts--------------');
+    console.log('index', index);
+    console.log('shifts_indexed', shifts_indexed);
+
+    let prev: Shift[] | null = null;
+    let next = null;
+    if (index === 0) {
+      prev = [];
+      next = shifts_indexed.slice(1);
+    } else {
+      prev = shifts_indexed.slice(0, index);
+      next = shifts_indexed.slice(index + 1);
+    }
+    console.log('prev,', prev);
+    console.log('next,', next);
+
+    setCurrentActor(actors[currentShift]);
+    setOrderedShifts([...next, ...prev]);
+  };
+
   const {projectName} = route.params;
 
-  console.log('projectName-------->', projectName);
   async function getData() {
     const data = await GetUSerFromStorage(navigation);
     console.log('data........', data);
@@ -87,7 +102,7 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
   useEffect(() => {
     console.log('--------DetailShiftScreen---------');
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    navigation.setOptions(options);
   }, []);
 
   useEffect(() => {
@@ -96,9 +111,13 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     }
   }, [emailUser]);
 
+  useEffect(() => {
+    if (actors.length !== 0) {
+      orderShifts();
+    }
+  }, [currentShift]);
+
   async function getDetailData() {
-    console.log('emailUser', emailUser);
-    console.log('getdetail data', projectName);
     if (emailUser) {
       getDetailProject();
     }
@@ -131,12 +150,10 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
           console.log('response.json', JSON.parse(result));
           const resultJson = JSON.parse(result);
           console.log('_________x_______', resultJson.data);
-          ORDERED_SHIFTS = orderShifts(
-            resultJson.data.actors,
-            resultJson.data.current,
-          );
-          console.log('{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}', ORDERED_SHIFTS);
+
+          setActors(resultJson.data.actors);
           setProjectData(resultJson.data);
+          setCurrentShift(resultJson.data.current);
           console.log(result);
         })
         .catch(error => console.log('error', error));
@@ -162,7 +179,7 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
         body: raw,
         redirect: 'follow',
       };
-
+      setIsLoading(true);
       await fetch(
         'https://shift-mate-crud.vercel.app/api/next_turn',
         requestOptions,
@@ -174,6 +191,8 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
           const resultJson = JSON.parse(result);
           console.log('_________x_______', resultJson.data);
           console.log(result);
+          setIsLoading(false);
+          setCurrentShift(resultJson.data.newShift);
         })
         .catch(error => console.log('error', error));
     } catch (error) {
@@ -185,7 +204,7 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        {projectData == null ? (
+        {projectData === undefined ? (
           <ActivityIndicator size="large" />
         ) : (
           <>
@@ -200,22 +219,26 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
                 </Text>
               </Text>
               <Text style={styles.current}>Current Assigned</Text>
-              <Text style={styles.currentShift}>{curren_shift_user.title}</Text>
+              <Text style={styles.currentShift}>{currentActor}</Text>
             </View>
-            <Pressable>
-              <Text
-                style={styles.buttonDone}
-                onPress={() => {
-                  sendNextShift();
-                }}>
-                Done
-              </Text>
-            </Pressable>
+            {isLoading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <Pressable>
+                <Text
+                  style={styles.buttonDone}
+                  onPress={() => {
+                    sendNextShift();
+                  }}>
+                  Done
+                </Text>
+              </Pressable>
+            )}
             <View>
               <Text>Ordered List</Text>
               <FlatList
                 removeClippedSubviews={false}
-                data={ORDERED_SHIFTS}
+                data={orderedShifts}
                 renderItem={({item}) => {
                   return <Item title={item.title} />;
                 }}

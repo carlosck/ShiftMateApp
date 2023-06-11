@@ -15,7 +15,7 @@ export default async function GetUSerFromStorage({navigation}: MainProps) {
   try {
     const result = await AsyncStorage.getItem('@shiftMateAppUserData');
     console.log('GetUSerFromStorage');
-    console.log('result', result);
+    // console.log('result', result);
     if (result !== null) {
       return result != null ? JSON.parse(result) : null;
     } else {

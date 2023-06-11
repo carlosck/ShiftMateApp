@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 import GetUSerFromStorage from '../helpers/getUSerDataFromStorage';
@@ -24,6 +25,7 @@ function NewShiftScreen({navigation}: any): JSX.Element {
   const [userList, setUserList] = useState<string[]>([]);
   //const {emailUser} = route.params;
   const [emailUser, setEmailUser] = useState<String | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addUser = () => {
     setUserList([...userList, userName]);
@@ -56,6 +58,7 @@ function NewShiftScreen({navigation}: any): JSX.Element {
       redirect: 'follow',
     };
     console.log('requestOptions', requestOptions);
+    setIsLoading(true);
     fetch(
       'https://shift-mate-crud.vercel.app/api/create_project',
       requestOptions,
@@ -64,6 +67,7 @@ function NewShiftScreen({navigation}: any): JSX.Element {
       .then(result => {
         console.log(result);
         navigation.navigate('Main');
+        setIsLoading(false);
       })
       .catch(error => console.log('error', error));
   };
@@ -86,6 +90,7 @@ function NewShiftScreen({navigation}: any): JSX.Element {
           </View>
           <View>
             <Text>Add User</Text>
+
             <TextInput
               value={userName}
               onChangeText={name => {
@@ -103,15 +108,19 @@ function NewShiftScreen({navigation}: any): JSX.Element {
                 Add User
               </Text>
             </Pressable>
-            <Pressable>
-              <Text
-                style={styles.buttonDone}
-                onPress={() => {
-                  addProject();
-                }}>
-                Done
-              </Text>
-            </Pressable>
+            {isLoading ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <Pressable>
+                <Text
+                  style={styles.buttonDone}
+                  onPress={() => {
+                    addProject();
+                  }}>
+                  Done
+                </Text>
+              </Pressable>
+            )}
           </View>
           <View>
             <FlatList
