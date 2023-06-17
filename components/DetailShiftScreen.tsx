@@ -51,20 +51,14 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     // eslint-disable-next-line react/no-unstable-nested-components
     headerRight: () => (
       <>
-        <Pressable>
-          <Text
-            onPress={() => {
-              navigation.navigate('AddActor', {});
-            }}>
-            Add Actor
-          </Text>
-        </Pressable>
         <MenuEditShift navigation={navigation} projectSlug={projectSlug} />
       </>
     ),
   };
 
   const orderShifts = () => {
+    console.log('---------------------------------orderShifts--------------');
+
     let shifts_indexed: Shift[] = [];
 
     actors.map((item, index) => {
@@ -78,7 +72,7 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     let index = shifts_indexed.findIndex(
       (element: Shift) => element.shift === currentShift,
     );
-    console.log('---------------------------------orderShifts--------------');
+
     console.log('index', index);
     console.log('shifts_indexed', shifts_indexed);
 
@@ -110,6 +104,11 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     getData();
     navigation.setOptions(options);
   }, []);
+  useEffect(() => {
+    if (projectData !== undefined) {
+      setActors(projectData.actors);
+    }
+  }, [projectData]);
 
   useEffect(() => {
     if (emailUser) {
@@ -122,6 +121,12 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
       orderShifts();
     }
   }, [currentShift]);
+
+  useEffect(() => {
+    if (actors.length !== 0) {
+      orderShifts();
+    }
+  }, [actors]);
 
   async function getDetailData() {
     if (emailUser) {
@@ -139,9 +144,8 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     const data = await db.getData('get_project', raw);
     const resultJson = JSON.parse(data);
     console.log('resultJson', resultJson.data);
-    setActors(resultJson.data.actors);
-    setProjectData(resultJson.data);
     setCurrentShift(resultJson.data.current);
+    setProjectData(resultJson.data);
   };
 
   const sendNextShift = async () => {
