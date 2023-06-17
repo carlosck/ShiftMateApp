@@ -10,7 +10,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
+import MenuEditShift from './MenuEditShift';
 import GetUSerFromStorage from '../helpers/getUSerDataFromStorage';
+import DBManager from '../helpers/dbManager';
 
 interface ProjectDataType {
   actors: Array<String>;
@@ -46,15 +48,19 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
 
   const [isLoading, setIsLoading] = useState(false);
   const options = {
+    // eslint-disable-next-line react/no-unstable-nested-components
     headerRight: () => (
-      <Pressable>
-        <Text
-          onPress={() => {
-            navigation.navigate('AddActor', {});
-          }}>
-          Add Actor
-        </Text>
-      </Pressable>
+      <>
+        <Pressable>
+          <Text
+            onPress={() => {
+              navigation.navigate('AddActor', {});
+            }}>
+            Add Actor
+          </Text>
+        </Pressable>
+        <MenuEditShift navigation={navigation} projectSlug={projectSlug} />
+      </>
     ),
   };
 
@@ -92,7 +98,7 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
     setOrderedShifts([...next, ...prev]);
   };
 
-  const {projectName} = route.params;
+  const {projectSlug} = route.params;
 
   async function getData() {
     const data = await GetUSerFromStorage(navigation);
@@ -124,81 +130,31 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
   }
 
   const getDetailProject = async () => {
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
+    var raw = JSON.stringify({
+      mail: emailUser,
+      project: projectSlug,
+    });
 
-      var raw = JSON.stringify({
-        mail: emailUser,
-        project: projectName,
-      });
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow',
-      };
-
-      await fetch(
-        'https://shift-mate-crud.vercel.app/api/get_project',
-        requestOptions,
-      )
-        .then(response => response.text())
-        .then(result => {
-          console.log('---------getProjectDetail---------');
-          console.log('response.json', JSON.parse(result));
-          const resultJson = JSON.parse(result);
-          console.log('_________x_______', resultJson.data);
-
-          setActors(resultJson.data.actors);
-          setProjectData(resultJson.data);
-          setCurrentShift(resultJson.data.current);
-          console.log(result);
-        })
-        .catch(error => console.log('error', error));
-    } catch (error) {
-      console.log('error---->', error);
-    }
-    // setLoaded(true);
+    const db = new DBManager();
+    const data = await db.getData('get_project', raw);
+    const resultJson = JSON.parse(data);
+    console.log('resultJson', resultJson.data);
+    setActors(resultJson.data.actors);
+    setProjectData(resultJson.data);
+    setCurrentShift(resultJson.data.current);
   };
 
   const sendNextShift = async () => {
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-
-      var raw = JSON.stringify({
-        mail: emailUser,
-        project: projectName,
-      });
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow',
-      };
-      setIsLoading(true);
-      await fetch(
-        'https://shift-mate-crud.vercel.app/api/next_turn',
-        requestOptions,
-      )
-        .then(response => response.text())
-        .then(result => {
-          console.log('---------sendNextShift---------');
-          console.log('response.json', JSON.parse(result));
-          const resultJson = JSON.parse(result);
-          console.log('_________x_______', resultJson.data);
-          console.log(result);
-          setIsLoading(false);
-          setCurrentShift(resultJson.data.newShift);
-        })
-        .catch(error => console.log('error', error));
-    } catch (error) {
-      console.log('error---->', error);
-    }
-    // setLoaded(true);
+    var raw = JSON.stringify({
+      mail: emailUser,
+      project: projectSlug,
+    });
+    const db = new DBManager();
+    const data = await db.getData('next_turn', raw);
+    const resultJson = JSON.parse(data);
+    console.log('resultJson', resultJson.data);
+    setIsLoading(false);
+    setCurrentShift(resultJson.data.newShift);
   };
 
   return (

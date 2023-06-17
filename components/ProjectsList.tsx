@@ -11,6 +11,7 @@ import {RootStackParamList} from '../types';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
+import DBManager from '../helpers/dbManager';
 type MainScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'Main'
@@ -22,17 +23,17 @@ type MainProps = {
 };
 
 type ItemProps = {
+  slug: string;
   name: string;
   navigation: MainScreenNavigationProp;
 };
 
-const Item = ({name, navigation}: ItemProps) => (
+const Item = ({slug, name, navigation}: ItemProps) => (
   <View style={styles.item}>
     <Pressable>
       <Text
         onPress={() => {
-          console.log('{projectName: name', name);
-          navigation.navigate('Detail', {projectName: name});
+          navigation.navigate('Detail', {projectSlug: slug});
         }}
         style={styles.title}>
         {name}
@@ -49,50 +50,30 @@ export default function ProjectsList({
 
   useEffect(() => {
     console.log('emailUser->', emailUser);
-    getProjects(emailUser);
+    if (emailUser !== null) {
+      getProjects();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailUser]);
 
-  const getProjects = async (emailUser: String) => {
-    try {
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-
-      var raw = JSON.stringify({
-        mail: emailUser,
-      });
-
-      var requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow',
-      };
-
-      await fetch(
-        'https://shift-mate-crud.vercel.app/api/get_user',
-        requestOptions,
-      )
-        .then(response => response.text())
-        .then(result => {
-          console.log('---------getProjects---------');
-          console.log('response.json', JSON.parse(result));
-          const resultJson = JSON.parse(result);
-          setProjects(resultJson.data);
-          console.log(result);
-        })
-        .catch(error => console.log('error', error));
-    } catch (error) {
-      console.log('error---->', error);
-    }
-    // setLoaded(true);
+  const getProjects = async () => {
+    var raw = JSON.stringify({
+      mail: emailUser,
+    });
+    const db = new DBManager();
+    const data = await db.getData('get_user', raw);
+    const resultJson = JSON.parse(data);
+    console.log('resultJson', resultJson.data);
+    setProjects(resultJson.data);
   };
+
   function AddProjectClick() {
     navigation.navigate('NewShift', {});
   }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getProjects(emailUser);
+      getProjects();
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -120,7 +101,7 @@ export default function ProjectsList({
           data={projects}
           renderItem={({item}) => {
             console.log('item', item);
-            return <Item name={item.name} navigation={navigation} />;
+            return <Item slug={item.id} name={item.name} navigation={navigation} />;
           }}
         />
       )}

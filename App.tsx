@@ -23,6 +23,7 @@ import Main from './components/Main';
 import LoginScreen from './components/LoginScreen';
 import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
+import EditShiftScreen from './components/EditShiftScreen';
 import SignUp from './components/SignupScreen';
 
 import {RootStackParamList} from './types';
@@ -57,6 +58,7 @@ function App(): JSX.Element {
               <Stack.Screen name="Detail" component={DetailShiftScreen} />
               <Stack.Screen name="SignUp" component={SignUp} />
               <Stack.Screen name="NewShift" component={NewShiftScreen} />
+              <Stack.Screen name="EditShift" component={EditShiftScreen} />
             </Stack.Navigator>
           </View>
         </NavigationContainer>
