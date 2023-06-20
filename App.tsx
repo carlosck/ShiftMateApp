@@ -6,25 +6,90 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+//import type {PropsWithChildren} from 'react';
+import {StyleSheet, View} from 'react-native';
+/*
 import {
   Colors,
   DebugInstructions,
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+} from 'react-native/Libraries/NewAppScreen';*/
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import Main from './components/Main';
+import LoginScreen from './components/LoginScreen';
+import LogoutScreen from './components/LogoutScreen';
+import DetailShiftScreen from './components/DetailShiftScreen';
+import NewShiftScreen from './components/NewShiftScreen';
+import EditShiftScreen from './components/EditShiftScreen';
+import SignUp from './components/SignupScreen';
+
+import {RootStackParamList} from './types';
+import {UserProvider} from './helpers/context';
+import MenuTitle from './components/MenuTitle';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+function App(): JSX.Element {
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#333333',
+    },
+    footerContainer: {backgroundColor: '#333333'},
+  });
+
+  return (
+    <>
+      <UserProvider>
+        <NavigationContainer>
+          <View style={styles.container}>
+            <Stack.Navigator initialRouteName="Main">
+              <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{
+                  headerTitle: () => <MenuTitle />,
+                }}
+              />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Logout" component={LogoutScreen} />
+              <Stack.Screen name="Detail" component={DetailShiftScreen} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="NewShift" component={NewShiftScreen} />
+              <Stack.Screen name="EditShift" component={EditShiftScreen} />
+            </Stack.Navigator>
+          </View>
+        </NavigationContainer>
+      </UserProvider>
+    </>
+  );
+}
+
+/*
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+});
+/*
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -55,64 +120,5 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
+*/
 export default App;

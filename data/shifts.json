@@ -1,0 +1,115 @@
+{
+  "data":[
+    {
+      "id": 1,
+      "title": "Lavar Platos",
+      "currentShift": 1,
+      "shifts": [
+        {
+          "id": 1,
+          "title": "Carlos",
+          "shift": 0
+        },
+        {
+          "id": 2,
+          "title": "Benjamín",
+          "shift": 1
+        },
+        {
+          "id": 3,
+          "title": "Carlitos",
+          "shift": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Bañar a Tati",
+      "currentShift": 1,
+      "shifts": [
+        {
+          "id": 1,
+          "title": "Carlos",
+          "shift": 0
+        },
+        {
+          "id": 2,
+          "title": "Benjamín",
+          "shift": 1
+        },
+        {
+          "id": 3,
+          "title": "Carlitos",
+          "shift": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Sacar la basura",
+      "currentShift": 1,
+      "shifts": [
+        {
+          "id": 1,
+          "title": "Carlos",
+          "shift": 0
+        },
+        {
+          "id": 2,
+          "title": "Benjamín",
+          "shift": 1
+        },
+        {
+          "id": 3,
+          "title": "Carlitos",
+          "shift": 2
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Bañarse primero",
+      "currentShift": 1,
+      "shifts": [
+        {
+          "id": 1,
+          "title": "Carlos",
+          "shift": 0
+        },
+        {
+          "id": 2,
+          "title": "Benjamín",
+          "shift": 1
+        },
+        {
+          "id": 3,
+          "title": "Carlitos",
+          "shift": 2
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Barrer la cochera",
+      "currentShift": 1,
+      "shifts": [
+        {
+          "id": 1,
+          "title": "Carlos",
+          "shift": 0
+        },
+        {
+          "id": 2,
+          "title": "Benjamín",
+          "shift": 1
+        },
+        {
+          "id": 3,
+          "title": "Carlitos",
+          "shift": 2
+        }
+      ]
+    }
+  ]
+  
+}

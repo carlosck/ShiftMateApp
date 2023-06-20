@@ -1,4 +1,4 @@
-package com.shiftmateapp;
+package mx.rdy.shiftmate;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
