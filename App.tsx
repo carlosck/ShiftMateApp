@@ -21,6 +21,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Main from './components/Main';
 import LoginScreen from './components/LoginScreen';
+import LogoutScreen from './components/LogoutScreen';
 import DetailShiftScreen from './components/DetailShiftScreen';
 import NewShiftScreen from './components/NewShiftScreen';
 import EditShiftScreen from './components/EditShiftScreen';
@@ -55,6 +56,7 @@ function App(): JSX.Element {
                 }}
               />
               <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Logout" component={LogoutScreen} />
               <Stack.Screen name="Detail" component={DetailShiftScreen} />
               <Stack.Screen name="SignUp" component={SignUp} />
               <Stack.Screen name="NewShift" component={NewShiftScreen} />

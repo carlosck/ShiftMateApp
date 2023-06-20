@@ -27,9 +27,11 @@ function SignUp({navigation}: MainProps): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRepassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   //const UserData = useContext(UserContext);
 
   const setSignUp: any = () => {
+    setIsLoading(true);
     console.log('email', email);
     console.log('pass', password);
 
@@ -41,10 +43,11 @@ function SignUp({navigation}: MainProps): JSX.Element {
           UserData.setUser(_user);
         } */
         saveUSerData(_user);
-        navigation.navigate('Main', {emailUser: 'algo'});
-        navigation.navigate('Main', {emailUser: ''});
+        navigation.navigate('Main', {});
+        setIsLoading(false);
       })
       .catch(error => {
+        setIsLoading(false);
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
         }
@@ -59,6 +62,10 @@ function SignUp({navigation}: MainProps): JSX.Element {
 
         console.error(error);
       });
+  };
+
+  const gotoLogin: any = () => {
+    navigation.navigate('Login', {});
   };
 
   return (
@@ -92,12 +99,16 @@ function SignUp({navigation}: MainProps): JSX.Element {
           onChangeText={setRepassword}
           style={styles.InputField}
         />
-        <Pressable onPress={setSignUp}>
-          <Text style={styles.Button}>Sign Up</Text>
-        </Pressable>
+        {isLoading ? (
+          <Text>Loading ...</Text>
+        ) : (
+          <Pressable onPress={setSignUp}>
+            <Text style={styles.Button}>Sign Up</Text>
+          </Pressable>
+        )}
       </View>
       <View>
-        <Pressable>
+        <Pressable onPress={gotoLogin}>
           <Text style={styles.Register}>Login</Text>
         </Pressable>
       </View>

@@ -43,7 +43,7 @@ function LoginScreen({navigation}: MainProps): JSX.Element {
         // setUser(_user);
         console.log('User____> ', _user);
         saveUSerData(_user);
-        navigation.navigate('Main', {emailUser: 'algo'});
+        navigation.navigate('Main', {});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {

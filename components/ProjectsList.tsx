@@ -101,7 +101,9 @@ export default function ProjectsList({
           data={projects}
           renderItem={({item}) => {
             console.log('item', item);
-            return <Item slug={item.id} name={item.name} navigation={navigation} />;
+            return (
+              <Item slug={item.id} name={item.name} navigation={navigation} />
+            );
           }}
         />
       )}

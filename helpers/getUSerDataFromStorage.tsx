@@ -1,29 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../types';
 
-type MainScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'Main'
->;
-
-type MainProps = {
-  navigation: MainScreenNavigationProp;
-};
-
-export default async function GetUSerFromStorage({navigation}: MainProps) {
+export default async function GetUSerFromStorage(navigation: any) {
   try {
     const result = await AsyncStorage.getItem('@shiftMateAppUserData');
     console.log('GetUSerFromStorage');
-    // console.log('result', result);
-    if (result !== null) {
-      return result != null ? JSON.parse(result) : null;
+
+    if (result) {
+      return JSON.parse(result);
     } else {
       navigation.navigate('Login', {itemId: 1});
     }
     //jsonValue = result != null ? JSON.parse(result) : null;
     return result;
   } catch (e) {
+    console.log('error en');
+    console.log(e);
     // error reading value
   }
 }
