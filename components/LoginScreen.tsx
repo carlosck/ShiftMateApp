@@ -42,7 +42,7 @@ function LoginScreen({navigation}: MainProps): JSX.Element {
         // const user = useContext(UserContext);
         // setUser(_user);
         console.log('User____> ', _user);
-        saveUSerData(_user);
+        await saveUSerData(_user);
         navigation.navigate('Main', {});
       })
       .catch(error => {
