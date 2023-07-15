@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import ProjectsList from './ProjectsList';
 import UserData from '../types/userData';
 import GetUSerFromStorage from '../helpers/getUSerDataFromStorage';
@@ -17,6 +17,7 @@ function Main({navigation}: any): JSX.Element {
       <>
         <Pressable>
           <Text
+           style={styles.title}
             onPress={() => {
               navigation.navigate('Logout');
             }}>
@@ -24,7 +25,7 @@ function Main({navigation}: any): JSX.Element {
           </Text>
         </Pressable>
         <Pressable>
-          <Text style={{marginLeft: 50}}
+          <Text style={styles.title}
             onPress={() => {
               navigation.navigate('NewShift', {});
             }}>
@@ -50,7 +51,6 @@ function Main({navigation}: any): JSX.Element {
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>
-      <Text>Home_s</Text>
       {userDataFromSession ? (
         <>
           <ProjectsList
@@ -66,6 +66,13 @@ function Main({navigation}: any): JSX.Element {
 }
 
 export default Main;
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 14,
+    fontWeight: '500',
+    marginLeft: 50,
+  },
+});
 /*
 <SafeAreaView>
         <FlatList

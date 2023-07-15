@@ -101,7 +101,7 @@ function NewShiftScreen({navigation}: any): JSX.Element {
             />
             <Pressable>
               <Text
-                style={styles.buttonDone}
+                style={styles.buttonAdd}
                 onPress={() => {
                   addUser();
                 }}>
@@ -142,21 +142,35 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingBottom: 50,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  centered: {
+    alignContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: 5,
     textAlign: 'center',
+    color: '#fefed5',
+    fontWeight: 600,
   },
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 15,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    fontSize: 40,
+    textAlign: 'center',
+    color: '#393e46',
+    fontWeight: '600',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'space-between',
+    marginBottom: 10,
   },
   itemTitle: {
-    fontSize: 15,
+    fontSize: 20,
     textAlign: 'center',
+    width: '70%',
   },
   current: {
     fontSize: 15,
@@ -170,12 +184,21 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
-  buttonDone: {
-    backgroundColor: '#000',
+  buttonAdd: {
+    backgroundColor: '#393e46',
     padding: 15,
     marginVertical: 8,
     marginHorizontal: 16,
-    color: '#fff',
+    color: '#fefed5',
+    borderRadius: 15,
+    textAlign: 'center',
+  },
+  buttonDone: {
+    backgroundColor: '#35d0ba',
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    color: '#fefed5',
     borderRadius: 15,
     textAlign: 'center',
   },
@@ -199,9 +222,11 @@ const styles = StyleSheet.create({
   },
   InputField: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#fefed5',
     width: 250,
     marginBottom: 20,
+    color: '#fefed5',
+    backgroundColor: '#35d0ba',
   },
   Button: {
     width: 250,

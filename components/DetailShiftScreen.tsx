@@ -178,8 +178,6 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
                   ).toDateString()}
                 </Text>
               </Text>
-              <Text style={styles.current}>Current Assigned</Text>
-              <Text style={styles.currentShift}>{currentActor}</Text>
             </View>
             {isLoading ? (
               <ActivityIndicator size="large" />
@@ -190,12 +188,12 @@ function DetailShiftScreen({route, navigation}: any): JSX.Element {
                   onPress={() => {
                     sendNextShift();
                   }}>
-                  Done
+                  Next
                 </Text>
               </Pressable>
             )}
+            <Text style={styles.currentShift}>{currentActor}</Text>
             <View>
-              <Text>Ordered List</Text>
               <FlatList
                 removeClippedSubviews={false}
                 data={orderedShifts}
@@ -219,18 +217,23 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: 5,
     textAlign: 'center',
+    color: '#35d0ba',
   },
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 15,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 4,
+    marginVertical: 4,
+    marginHorizontal: 4,
+    borderRadius: 10,
+    overflow: 'hidden',
+    background: 'transparent',
   },
   itemTitle: {
-    fontSize: 15,
+    fontSize: 30,
     textAlign: 'center',
+    color: '#393e46',
+    fontWeight: '600',
   },
   current: {
     fontSize: 15,
@@ -241,27 +244,31 @@ const styles = StyleSheet.create({
     fontSize: 50,
     marginBottom: 15,
     textAlign: 'center',
-    color: '#000',
+    color: '#35d0ba',
     fontWeight: 'bold',
   },
   buttonDone: {
-    backgroundColor: '#000',
+    backgroundColor: '#393e46',
     padding: 15,
     marginVertical: 8,
     marginHorizontal: 16,
-    color: '#fff',
+    color: '#fefed5',
     borderRadius: 15,
     textAlign: 'center',
   },
   lastChangeTitle: {
     fontSize: 12,
-    marginBottom: 0,
+    marginBottom: 10,
     textAlign: 'center',
+    color: '#555',
   },
   lastChangeDate: {
+    paddingLeft: '10px',
     fontSize: 12,
     marginBottom: 0,
     textAlign: 'center',
+    color: '#393e46',
+    fontWeight: '600',
   },
 });
 export default DetailShiftScreen;

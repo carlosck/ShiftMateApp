@@ -19,7 +19,7 @@ const Item = ({title, delUser}: ItemProps) => (
   <View style={styles.item}>
     <Text style={styles.itemTitle}>{title}</Text>
     <Pressable>
-      <Text
+      <Text style={styles.itemClose}
         onPress={() => {
           delUser(title);
         }}>
@@ -111,9 +111,8 @@ function EditShiftScreen({route, navigation}: any): JSX.Element {
   return (
     <ScrollView>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Edit Shift</Text>
         {!isLoadingInitialData ? (
-          <View>
+          <View style={styles.centered}>
             <View>
               <Text>Shift Name</Text>
               <TextInput
@@ -148,7 +147,7 @@ function EditShiftScreen({route, navigation}: any): JSX.Element {
               ) : (
                 <Pressable>
                   <Text
-                    style={styles.buttonDone}
+                    style={styles.buttonAdd}
                     onPress={() => {
                       editProject();
                     }}>
@@ -179,40 +178,53 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingBottom: 50,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  centered: {
+    alignContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 15,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  itemTitle: {
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  current: {
-    fontSize: 15,
     marginBottom: 5,
     textAlign: 'center',
+    color: '#fefed5',
+    fontWeight: 600,
   },
-  currentShift: {
-    fontSize: 50,
-    marginBottom: 15,
+  item: {
+    fontSize: 40,
     textAlign: 'center',
-    color: '#000',
-    fontWeight: 'bold',
+    color: '#393e46',
+    fontWeight: '600',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'space-between',
+    marginBottom: 10,
   },
+  itemTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    width: '70%',
+  },
+  itemClose: {
+    fontSize: 10,
+    textAlign: 'center',
+    color: '#393e46',
+    fontWeight: '600',
+    borderWidth: 1,
+    borderColor: '#fefed5',
+    marginLeft: 30,
+    padding: 10,
+  },
+
   buttonDone: {
-    backgroundColor: '#000',
+    backgroundColor: '#393e46',
     padding: 15,
     marginVertical: 8,
     marginHorizontal: 16,
-    color: '#fff',
+    color: '#fefed5',
     borderRadius: 15,
     textAlign: 'center',
   },
@@ -231,21 +243,24 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ccc',
-    paddingTop: 50,
+    paddingTop: 20,
     paddingBottom: 50,
   },
   InputField: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#fefed5',
     width: 250,
     marginBottom: 20,
+    color: '#fefed5',
+    backgroundColor: '#35d0ba',
   },
-  Button: {
-    width: 250,
-    borderRadius: 5,
-    backgroundColor: '#000',
-    color: '#fff',
-    padding: 10,
+  buttonAdd: {
+    backgroundColor: '#35d0ba',
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    color: '#fefed5',
+    borderRadius: 15,
     textAlign: 'center',
   },
   Register: {

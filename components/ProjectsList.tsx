@@ -116,12 +116,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#35d0ba',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderRadius: 10,
+    overflow: 'hidden',
+    background: 'transparent',
   },
   title: {
     fontSize: 32,
+    color: '#fefed5',
   },
 });

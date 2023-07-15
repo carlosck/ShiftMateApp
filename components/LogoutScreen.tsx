@@ -34,10 +34,9 @@ function LogoutScreen({navigation}: MainProps): JSX.Element {
     navigation.navigate('Main', {});
   };
   return (
-    <View style={styles.Container}>
-      <Text style={styles.Title}>ShiftMate</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>ShiftMate</Text>
       <View>
-        <Text>Logout</Text>
         <Pressable onPress={setLogout}>
           <Text style={styles.Button}>Logout</Text>
         </Pressable>
@@ -52,18 +51,23 @@ function LogoutScreen({navigation}: MainProps): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     flex: 1,
+    paddingTop: 20,
+    paddingBottom: 50,
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ccc',
-    paddingTop: 50,
-    paddingBottom: 50,
   },
-  Title: {
-    flex: 1,
+  centered: {
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
     fontSize: 24,
-    fontWeight: '700',
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#35d0ba',
+    fontWeight: 600,
   },
   InputField: {
     borderWidth: 1,
@@ -72,12 +76,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   Button: {
-    width: 250,
-    borderRadius: 5,
-    backgroundColor: '#000',
-    color: '#fff',
-    padding: 10,
+    backgroundColor: '#393e46',
+    padding: 15,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    color: '#fefed5',
+    borderRadius: 15,
     textAlign: 'center',
+    width: 250,
   },
   Register: {
     fontSize: 15,
